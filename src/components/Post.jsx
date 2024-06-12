@@ -13,16 +13,27 @@ export function Post({author, publishedAt, content}){
 		addSuffix: true
 	})
 
-	// Comments
-	const newCommentText = event.target.comment.value
-
 	// States
 	const [comments, setComments] = useState(["Post muito legal!!"]);
+	const [newCommentText, setNewCommentText] = useState('')
 
 	// Handles
 	function handleCreateNewComment(e){
 		e.preventDefault();
-		setComments([...comments, newCommentText])
+		setComments([...comments, e.target.comment.value])
+		setNewCommentText('')
+	}
+
+	function handleNewCommentText(e){
+		setNewCommentText(e.target.value)
+	}
+
+	// functions
+	function deleteComment(commentToDelete){
+		const commentsWithoutDeletedOne = comments.filter( comment =>{
+			return comment !== commentToDelete
+		})
+		setComments(commentsWithoutDeletedOne)
 	}
 
 	return(
@@ -41,10 +52,10 @@ export function Post({author, publishedAt, content}){
 				{content.map( line =>{
 					return line.type === 'paragraph'
 					? (
-						<p>{line.content}</p>
+						<p key={line.content}>{line.content}</p>
 					)
 					: (
-						<p><a href="">{line.content}</a></p>
+						<p key={line.content}><a href="">{line.content}</a></p>
 					)
 				})}
 			</div>
@@ -52,7 +63,9 @@ export function Post({author, publishedAt, content}){
 				<strong>Deixe seu feedback</strong>
 				<textarea
 					placeholder='Deixe um comentário'
-					name="comment"
+					name='comment'
+					value={newCommentText}
+					onChange={handleNewCommentText}
 				/>
 				<footer>
 					<button type="submit">Comentar</button>
@@ -61,7 +74,13 @@ export function Post({author, publishedAt, content}){
 
 			<div className={styles.commentList}>
 				{comments.map( comment => {
-					return <Comment content={comment} />
+					return (
+						<Comment
+							onDeleteComment={deleteComment}
+							key={comment}
+							content={comment}
+						/>
+					)
 				})}
 			</div>
 		</article>

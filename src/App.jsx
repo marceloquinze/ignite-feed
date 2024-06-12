@@ -18,7 +18,7 @@ const posts = [
       role: 'Web Developer'
     },
     content: [
-      { type: 'paragraph', content: 'Fala devs'},
+      { type: 'paragraph', content: 'Fala devs as'},
       { type: 'paragraph', content: 'Fala devs'},
       { type: 'link', content: 'jane.design/docsss'},
     ],
@@ -32,7 +32,7 @@ const posts = [
       role: 'Designer'
     },
     content: [
-      { type: 'paragraph', content: 'Fala devs'},
+      { type: 'paragraph', content: 'Fala devs aa'},
       { type: 'paragraph', content: 'Fala devs'},
       { type: 'link', content: 'jane.design/docsss'},
     ],
@@ -52,6 +52,7 @@ function App() {
           { posts.map( post => {
             return(
               <Post
+                key={post.id}
                 author={post.author}
                 content={post.content}
                 publishedAt={post.publishedAt}
